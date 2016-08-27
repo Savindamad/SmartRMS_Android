@@ -52,7 +52,6 @@
         android:layout_alignTop="@+id/imageView"
         android:layout_alignParentStart="true"
         android:layout_marginTop="200dp"
-        android:layout_marginLeft="120dp"
-        android:onClick="TableTypes"/>
+        android:layout_marginLeft="120dp" />
 
 </RelativeLayout>
