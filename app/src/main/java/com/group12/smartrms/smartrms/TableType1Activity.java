@@ -47,7 +47,6 @@ public class TableType1Activity extends AppCompatActivity {
                 menuItems[i]=(MenuItems[]) menu[i];
             }
         }
-        System.out.println("pass constructor");
         requestQueue = Volley.newRequestQueue(this);
     }
 
@@ -92,21 +91,45 @@ public class TableType1Activity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(response);
                     if (!(jsonObject.names().get(0).equals("error"))) {
                         String temp = jsonObject.getString("waiter_id");
-                        System.out.println(temp);
-                        System.out.println(userID);
                         if(userID.equals(temp) || temp.equals("0")){
                             LoadActivity();
                         }
                         else{
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(TableType1Activity.this);
+                            builder1.setTitle("Can not access");
+                            builder1.setMessage("you can not access this table");
+                            builder1.setCancelable(true);
 
+                            builder1.setPositiveButton(
+                                    "Okay",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                            AlertDialog alert11 = builder1.create();
+                            alert11.show();
                         }
                     }
                     else {
-                        System.out.println("pass f");
-                        //databse error
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(TableType1Activity.this);
+                        builder1.setTitle("Error");
+                        builder1.setMessage("Database error..");
+                        builder1.setCancelable(true);
+
+                        builder1.setPositiveButton(
+                                "Retry",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
                     }
                 } catch (JSONException e) {
-                    System.out.println("pass g");
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(TableType1Activity.this);
                     builder1.setTitle("Error");
                     builder1.setMessage("Network error..");
