@@ -7,14 +7,24 @@ import android.view.View;
 
 public class TableType2Activity extends AppCompatActivity {
     String userID = "";
+    MenuItems[][] menuItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_type2);
 
-        Intent intent = getIntent();
-        userID = intent.getStringExtra("userID");
+        Intent prIntent = getIntent();
+        userID = prIntent.getStringExtra("userID");
+        Object[] menu = (Object[]) prIntent.getExtras().getSerializable("MenuArray");
+
+        if(menu!=null){
+            menuItems = new MenuItems[menu.length][];
+            for(int i=0;i<menu.length;i++){
+                menuItems[i]=(MenuItems[]) menu[i];
+            }
+        }
+        System.out.println("pass constructor");
     }
 
 

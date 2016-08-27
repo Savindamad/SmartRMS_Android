@@ -42,6 +42,6 @@
         android:background="#0112ff"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        android:onClick="Login"/>
+        android:onClick="login"/>
 
 </RelativeLayout>
