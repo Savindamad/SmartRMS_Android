@@ -7,7 +7,7 @@ import android.view.View;
 
 public class TableTypeActivity extends AppCompatActivity {
     String userID = "";
-    MenuItems[][] menuItems;
+    MenuItems[] menuItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,10 +17,9 @@ public class TableTypeActivity extends AppCompatActivity {
         Object[] menu = (Object[]) prIntent.getExtras().getSerializable("MenuArray");
 
         if(menu!=null){
-            menuItems = new MenuItems[menu.length][];
+            menuItems = new MenuItems[menu.length];
             for(int i=0;i<menu.length;i++){
-                menuItems[i]=(MenuItems[]) menu[i];
-                System.out.println(menuItems[i]);
+                menuItems[i]=(MenuItems) menu[i];
             }
         }
         System.out.println("pass constructor");

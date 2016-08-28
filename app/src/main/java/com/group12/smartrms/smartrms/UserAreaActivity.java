@@ -44,7 +44,6 @@ public class UserAreaActivity extends Activity {
         userID = intent.getStringExtra("userID");
         name = intent.getStringExtra("Name");
 
-        final Button bLogout = (Button)findViewById(R.id.bLogout);
         final Button bTableTypes = (Button)findViewById(R.id.bTableTypes);
         final TextView etName = (TextView)findViewById(R.id.lName);
         etName.setText(name);
@@ -73,7 +72,6 @@ public class UserAreaActivity extends Activity {
                                 menuArrayType[i] = menuItem.getString("type");
                                 menuArrayDescription[i] = menuItem.getString("description");
                                 menuArrayPrice[i] = menuItem.getString("price");
-                                System.out.println(menuArrayName[i]);
 
                             }
                         } catch (JSONException e) {

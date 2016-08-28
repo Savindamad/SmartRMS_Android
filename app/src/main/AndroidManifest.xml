@@ -31,7 +31,11 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".UserAreaActivity"></activity>
+        <activity android:name=".UserAreaActivity" />
+        <activity android:name=".AddNewOrderActivity" />
+        <activity android:name=".ViewAndEditOrderActivity"></activity>
+        <activity android:name=".AddNewOrderTab1Activity"></activity>
+        <activity android:name=".AddNewOrderTab2Activity"></activity>
     </application>
 
 </manifest>

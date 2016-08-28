@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class TableType1Activity extends AppCompatActivity {
     String userID = "";
-    MenuItems[][] menuItems;
+    MenuItems[] menuItems;
     RequestQueue requestQueue;
 
     StringRequest request;
@@ -42,9 +42,9 @@ public class TableType1Activity extends AppCompatActivity {
         Object[] menu = (Object[]) prIntent.getExtras().getSerializable("MenuArray");
 
         if(menu!=null){
-            menuItems = new MenuItems[menu.length][];
+            menuItems = new MenuItems[menu.length];
             for(int i=0;i<menu.length;i++){
-                menuItems[i]=(MenuItems[]) menu[i];
+                menuItems[i]=(MenuItems) menu[i];
             }
         }
         requestQueue = Volley.newRequestQueue(this);
@@ -78,11 +78,6 @@ public class TableType1Activity extends AppCompatActivity {
 
     public void AccessTable(final String tableNum){
 
-        /*CheckTable checkTable = new CheckTable(this);
-        Intent intent = new Intent(TableType1Activity.this,OrderActivity.class);
-        checkTable.setIntent(intent);
-        checkTable.execute(userID,tableNum);*/
-
         request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -92,7 +87,7 @@ public class TableType1Activity extends AppCompatActivity {
                     if (!(jsonObject.names().get(0).equals("error"))) {
                         String temp = jsonObject.getString("waiter_id");
                         if(userID.equals(temp) || temp.equals("0")){
-                            LoadActivity();
+                            LoadActivity(tableNum);
                         }
                         else{
                             AlertDialog.Builder builder1 = new AlertDialog.Builder(TableType1Activity.this);
@@ -163,9 +158,10 @@ public class TableType1Activity extends AppCompatActivity {
         };
         requestQueue.add(request);
     }
-    public void LoadActivity(){
+    public void LoadActivity(String tableNum){
         Intent intent1 = new Intent(TableType1Activity.this,OrderActivity.class);
         intent1.putExtra("userID",userID);
+        intent1.putExtra("tableNum",tableNum);
         Bundle bundle = new Bundle();
         bundle.putSerializable("MenuArray",menuItems);
         intent1.putExtras(bundle);

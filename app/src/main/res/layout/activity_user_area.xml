@@ -9,39 +9,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.group12.smartrms.smartrms.UserAreaActivity">
 
-    ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/imageView2"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:src="@drawable/profilPic"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="220dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="420dp" />
+        android:src="@drawable/prof"
+        android:layout_margin="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Waiter&apos;s name....."
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
         android:id="@+id/lName"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_alignStart="@+id/imageView"
-        android:layout_marginLeft="150dp"
-        android:layout_marginTop="20dp" />
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imageView2"
+        android:layout_marginTop="10dp" />
 
     <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Logout"
         android:id="@+id/bLogout"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="60dp"
-        android:layout_marginLeft="150dp"
+        android:layout_below="@+id/lName"
+        android:layout_alignParentEnd="true"
         android:onClick="Logout"/>
 
     <Button
@@ -49,9 +43,7 @@
         android:layout_height="wrap_content"
         android:text="Table Types"
         android:id="@+id/bTableTypes"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="200dp"
-        android:layout_marginLeft="120dp" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

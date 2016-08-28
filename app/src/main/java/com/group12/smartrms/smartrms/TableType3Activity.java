@@ -24,7 +24,6 @@ public class TableType3Activity extends AppCompatActivity {
                 menuItems[i]=(MenuItems[]) menu[i];
             }
         }
-        System.out.println("pass constructor");
     }
 
 
@@ -37,9 +36,6 @@ public class TableType3Activity extends AppCompatActivity {
 
 
     public void AccessTable(String tableNum){
-        CheckTable checkTable = new CheckTable(this);
-        Intent intent = new Intent(TableType3Activity.this,OrderActivity.class);
-        checkTable.setIntent(intent);
-        checkTable.execute(userID, tableNum);
+
     }
 }
