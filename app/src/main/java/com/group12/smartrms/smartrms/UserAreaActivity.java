@@ -40,7 +40,6 @@ public class UserAreaActivity extends Activity {
         userID = intentpr.getStringExtra("userID");
         name = intentpr.getStringExtra("Name");
 
-        System.out.println("pass a");
 
         final Button bTableTypes = (Button)findViewById(R.id.bTableTypes);
         final TextView etName = (TextView)findViewById(R.id.lName);
@@ -49,18 +48,14 @@ public class UserAreaActivity extends Activity {
     }
     void getMenu(){
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-        System.out.println("clicked");
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    System.out.println("pass b");
                     JSONArray menuItems = response.getJSONArray("menu_items");
                     int size = menuItems.length();
-                    System.out.println("db table size "+size);
 
-
-                    System.out.println("pass c");
                     for (int i = 0; i < size; i++) {
 
                         JSONObject menuItem = menuItems.getJSONObject(i);
@@ -86,7 +81,6 @@ public class UserAreaActivity extends Activity {
                 System.out.println("Error user area "+error);
             }
         });
-        System.out.println("pass e");
         requestQueue.add(jsonObjectRequest);
     }
     public void Logout(View view) {
@@ -97,10 +91,7 @@ public class UserAreaActivity extends Activity {
         Intent intent = new Intent(UserAreaActivity.this,TableTypeActivity.class);
         intent.putExtra("userID", userID);
         intent.putExtra("menu", menu);
-        System.out.println("user area size "+menu.size());
-        System.out.println("pass f");
         startActivity(intent);
-        System.out.println("pass g");
     }
 
     public void tableTypes(View view) {

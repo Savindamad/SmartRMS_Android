@@ -5,9 +5,28 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Tab 2"
-        android:id="@+id/tvTab2"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Order num"
+        android:id="@+id/tvOrderNum"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accept order"
+        android:id="@+id/bAcceptOrder"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lvOrder"
+        android:layout_below="@+id/bAcceptOrder"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

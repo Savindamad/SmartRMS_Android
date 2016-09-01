@@ -1,7 +1,5 @@
 package com.group12.smartrms.smartrms;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -10,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -25,8 +24,10 @@ public class AddNewOrderActivity extends FragmentActivity {
     private String tableNum = "";
     private ArrayList<MenuItems> menu = new ArrayList<MenuItems>();
     private List<MenuItems> menuTemp = new ArrayList<MenuItems>();
+    private ArrayList<MenuItems> order =new ArrayList<MenuItems>();
 
     ArrayAdapter<MenuItems> adapter;
+    ArrayAdapter<MenuItems> adapter1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,12 @@ public class AddNewOrderActivity extends FragmentActivity {
         adapter = new MyListAdapter();
         list.setAdapter(adapter);
 
+        final ListView list1 = (ListView)findViewById(R.id.lvOrder);
+        adapter1 = new MyListAdapter1();
+        list1.setAdapter(adapter1);
+
+
+
         final EditText search = (EditText)findViewById(R.id.etSearch);
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -75,12 +82,11 @@ public class AddNewOrderActivity extends FragmentActivity {
                 String text = search.getText().toString().toLowerCase(Locale.getDefault());
 
                 menuTemp.clear();
-                if(text.length()==0){
+                if (text.length() == 0) {
                     menuTemp.addAll(menu);
-                }
-                else{
-                    for(int i=0; i<menu.size(); i++){
-                        if(menu.get(i).getItemName().toLowerCase(Locale.getDefault()).contains(text)){
+                } else {
+                    for (int i = 0; i < menu.size(); i++) {
+                        if (menu.get(i).getItemName().toLowerCase(Locale.getDefault()).contains(text)) {
                             menuTemp.add(menu.get(i));
                         }
                     }
@@ -101,18 +107,57 @@ public class AddNewOrderActivity extends FragmentActivity {
             super(AddNewOrderActivity.this, R.layout.list_view_layout, menuTemp);
         }
         @Override
-        public View getView(int position, View convertView,ViewGroup parent){
+        public View getView(final int position, View convertView,ViewGroup parent){
             View itemView = convertView;
             if(itemView==null){
                 itemView = getLayoutInflater().inflate(R.layout.list_view_layout,parent,false);
             }
             MenuItems tempItem = menuTemp.get(position);
             TextView code = (TextView)itemView.findViewById(R.id.tvMealCode);
-            TextView name = (TextView)itemView.findViewById(R.id.tvMealName);
+            TextView name = (TextView)itemView.findViewById(R.id.tvMealName1);
             TextView description = (TextView)itemView.findViewById(R.id.tvMealDes);
+            Button Add = (Button)itemView.findViewById(R.id.bAdd);
             code.setText("00"+(position+1));
             name.setText(tempItem.getItemName());
             description.setText(tempItem.getItemDescription());
+            Add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    order.add(menuTemp.get(position));
+                    for(int i = 0; i<menu.size(); i++){
+                        if(menuTemp.get(position).getItemCode().equals(menu.get(i).getItemCode())){
+                            menu.remove(i);
+                            menuTemp.remove(position);
+                            adapter.notifyDataSetChanged();
+                            adapter1.notifyDataSetChanged();
+                            break;
+                        }
+                    }
+                }
+            });
+            return itemView;
+
+        }
+    }
+    private class MyListAdapter1 extends ArrayAdapter<MenuItems>{
+
+        public MyListAdapter1() {
+            super(AddNewOrderActivity.this, R.layout.list_view_layout1, order);
+        }
+        @Override
+        public View getView(final int position, View convertView,ViewGroup parent){
+            View itemView = convertView;
+            if(itemView==null){
+                itemView = getLayoutInflater().inflate(R.layout.list_view_layout1,parent,false);
+            }
+            MenuItems tempItem = order.get(position);
+            TextView code = (TextView)itemView.findViewById(R.id.tvMealCode1);
+            TextView name = (TextView)itemView.findViewById(R.id.tvMealName1);
+            TextView description = (TextView)itemView.findViewById(R.id.tvMealDes1);
+            code.setText("0"+(position+1));
+            name.setText(tempItem.getItemName());
+            description.setText(tempItem.getItemDescription());
+
             return itemView;
 
         }
