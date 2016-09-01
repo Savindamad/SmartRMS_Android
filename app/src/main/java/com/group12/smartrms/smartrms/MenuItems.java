@@ -1,9 +1,11 @@
 package com.group12.smartrms.smartrms;
 
+import java.io.Serializable;
+
 /**
  * Created by Savinda Keshan on 8/26/2016.
  */
-public class MenuItems {
+public class MenuItems implements Serializable{
     public String itemCode;
     public String itemName;
     public String itemType;

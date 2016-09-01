@@ -44,6 +44,7 @@
         android:text="Table Types"
         android:id="@+id/bTableTypes"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="tableTypes"/>
 
 </RelativeLayout>

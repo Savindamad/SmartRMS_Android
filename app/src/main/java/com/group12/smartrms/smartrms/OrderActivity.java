@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class OrderActivity extends AppCompatActivity {
     String userID = "";
     String tableNum = "";
-    MenuItems[][] menuItems;
+    ArrayList<MenuItems> menu = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,33 +23,23 @@ public class OrderActivity extends AppCompatActivity {
         Intent prIntent = getIntent();
         userID = prIntent.getStringExtra("userID");
         tableNum = prIntent.getStringExtra("tableNum");
+        menu = (ArrayList<MenuItems>)prIntent.getSerializableExtra("menu");
         tabNum.setText("Table "+tableNum);
 
-        Object[] menu = (Object[]) prIntent.getExtras().getSerializable("MenuArray");
-
-        if(menu!=null){
-            menuItems = new MenuItems[menu.length][];
-            for(int i=0;i<menu.length;i++){
-                menuItems[i]=(MenuItems[]) menu[i];
-            }
-        }
     }
 
     public void NewOrder(View view) {
         Intent intent1 = new Intent(OrderActivity.this,AddNewOrderActivity.class);
         intent1.putExtra("userID",userID);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("MenuArray",menuItems);
-        intent1.putExtras(bundle);
+        intent1.putExtra("menu",menu);
+        intent1.putExtra("tableNum",tableNum);
         startActivity(intent1);
     }
 
     public void ViewAndEditOrder(View view) {
         Intent intent1 = new Intent(OrderActivity.this,ViewAndEditOrderActivity.class);
         intent1.putExtra("userID",userID);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("MenuArray",menuItems);
-        intent1.putExtras(bundle);
+        intent1.putExtra("menu",menu);
         startActivity(intent1);
     }
 

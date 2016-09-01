@@ -7,7 +7,7 @@ import android.view.View;
 
 public class TableType3Activity extends AppCompatActivity {
     String userID = "";
-    MenuItems[][] menuItems;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,14 +16,7 @@ public class TableType3Activity extends AppCompatActivity {
 
         Intent prIntent = getIntent();
         userID = prIntent.getStringExtra("userID");
-        Object[] menu = (Object[]) prIntent.getExtras().getSerializable("MenuArray");
 
-        if(menu!=null){
-            menuItems = new MenuItems[menu.length][];
-            for(int i=0;i<menu.length;i++){
-                menuItems[i]=(MenuItems[]) menu[i];
-            }
-        }
     }
 
 

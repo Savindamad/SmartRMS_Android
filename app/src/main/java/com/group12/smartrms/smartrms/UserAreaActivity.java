@@ -19,17 +19,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UserAreaActivity extends Activity {
+import java.util.ArrayList;
 
-    MenuItems[] menuItemArray = new MenuItems[1];
-    String[] menuArrayCode = new String[1];
-    String[] menuArrayName = new String[1];
-    String[] menuArrayType = new String[1];
-    String[] menuArrayDescription = new String[1];
-    String[] menuArrayPrice = new String[1];
+public class UserAreaActivity extends Activity {
 
     private String userID;
     private String name;
+    ArrayList<MenuItems> menu = new ArrayList<>();
 
     StringRequest request;
     private RequestQueue requestQueue;
@@ -40,63 +36,74 @@ public class UserAreaActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_area);
 
-        Intent intent = getIntent();
-        userID = intent.getStringExtra("userID");
-        name = intent.getStringExtra("Name");
+        Intent intentpr = getIntent();
+        userID = intentpr.getStringExtra("userID");
+        name = intentpr.getStringExtra("Name");
+
+        System.out.println("pass a");
 
         final Button bTableTypes = (Button)findViewById(R.id.bTableTypes);
         final TextView etName = (TextView)findViewById(R.id.lName);
         etName.setText(name);
+
+    }
+    void getMenu(){
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-        bTableTypes.setOnClickListener(new View.OnClickListener() {
+        System.out.println("clicked");
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, new Response.Listener<JSONObject>() {
             @Override
-            public void onClick(View v) {
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray menuItems = response.getJSONArray("menu_items");
-                            int size = menuItems.length();
-                            menuArrayCode = new String[size];
-                            menuArrayName = new String[size];
-                            menuArrayType = new String[size];
-                            menuArrayDescription = new String[size];
-                            menuArrayPrice = new String[size];
-                            menuItemArray = new MenuItems[size];
+            public void onResponse(JSONObject response) {
+                try {
+                    System.out.println("pass b");
+                    JSONArray menuItems = response.getJSONArray("menu_items");
+                    int size = menuItems.length();
+                    System.out.println("db table size "+size);
 
-                            for (int i = 0; i < size; i++) {
-                                JSONObject menuItem = menuItems.getJSONObject(i);
-                                menuItemArray[i] = new MenuItems(menuItem.getString("menu_item_code"),menuItem.getString("name"),menuItem.getString("type"),menuItem.getString("description"),menuItem.getString("price"));
-                                menuArrayCode[i] = menuItem.getString("menu_item_code");
-                                menuArrayName[i] = menuItem.getString("name");
-                                menuArrayType[i] = menuItem.getString("type");
-                                menuArrayDescription[i] = menuItem.getString("description");
-                                menuArrayPrice[i] = menuItem.getString("price");
 
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                    System.out.println("pass c");
+                    for (int i = 0; i < size; i++) {
+
+                        JSONObject menuItem = menuItems.getJSONObject(i);
+                        String itemCode = menuItem.getString("menu_item_code");
+                        String itemName = menuItem.getString("name");
+                        String itemType = menuItem.getString("type");
+                        String itemDescription = menuItem.getString("description");
+                        String itemPrice = menuItem.getString("price");
+                        menu.add(new MenuItems(itemCode,itemName,itemType,itemDescription,itemPrice));
 
                     }
-                });
-                requestQueue.add(jsonObjectRequest);
-                Intent intent1 = new Intent(UserAreaActivity.this,TableTypeActivity.class);
-                intent1.putExtra("userID",userID);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("MenuArray",menuItemArray);
-                intent1.putExtras(bundle);
-                startActivity(intent1);
+
+                    loadPage();
+
+                } catch (JSONException e) {
+                    System.out.println("error "+e);
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Error user area "+error);
             }
         });
+        System.out.println("pass e");
+        requestQueue.add(jsonObjectRequest);
     }
-
     public void Logout(View view) {
         Intent intent = new Intent(UserAreaActivity.this,LoginActivity.class);
         startActivity(intent);
+    }
+    void loadPage(){
+        Intent intent = new Intent(UserAreaActivity.this,TableTypeActivity.class);
+        intent.putExtra("userID", userID);
+        intent.putExtra("menu", menu);
+        System.out.println("user area size "+menu.size());
+        System.out.println("pass f");
+        startActivity(intent);
+        System.out.println("pass g");
+    }
+
+    public void tableTypes(View view) {
+        getMenu();
     }
 }

@@ -65,8 +65,6 @@ public class LoginActivity extends AppCompatActivity {
                             if (!(jsonObject.names().get(0).equals("fail"))) {
                                 String userID = jsonObject.getString("user_id");
                                 String name = jsonObject.getString("f_name") +" "+ jsonObject.getString("l_name");
-                                System.out.println("pass a");
-                                System.out.println("pass b");
                                 Intent intent = new Intent(LoginActivity.this, UserAreaActivity.class);
                                 intent.putExtra("userID", userID);
                                 intent.putExtra("Name", name);

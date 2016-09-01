@@ -20,12 +20,13 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TableType1Activity extends AppCompatActivity {
     String userID = "";
-    MenuItems[] menuItems;
+    ArrayList<MenuItems> menu = new ArrayList<MenuItems>();
     RequestQueue requestQueue;
 
     StringRequest request;
@@ -39,14 +40,7 @@ public class TableType1Activity extends AppCompatActivity {
 
         Intent prIntent = getIntent();
         userID = prIntent.getStringExtra("userID");
-        Object[] menu = (Object[]) prIntent.getExtras().getSerializable("MenuArray");
-
-        if(menu!=null){
-            menuItems = new MenuItems[menu.length];
-            for(int i=0;i<menu.length;i++){
-                menuItems[i]=(MenuItems) menu[i];
-            }
-        }
+        menu = (ArrayList<MenuItems>)prIntent.getSerializableExtra("menu");
         requestQueue = Volley.newRequestQueue(this);
     }
 
@@ -161,10 +155,8 @@ public class TableType1Activity extends AppCompatActivity {
     public void LoadActivity(String tableNum){
         Intent intent1 = new Intent(TableType1Activity.this,OrderActivity.class);
         intent1.putExtra("userID",userID);
-        intent1.putExtra("tableNum",tableNum);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("MenuArray",menuItems);
-        intent1.putExtras(bundle);
+        intent1.putExtra("tableNum", tableNum);
+        intent1.putExtra("menu",menu);
         startActivity(intent1);
     }
 }
