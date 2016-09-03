@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -28,6 +29,7 @@ public class AddNewOrderActivity extends FragmentActivity {
 
     ArrayAdapter<MenuItems> adapter;
     ArrayAdapter<MenuItems> adapter1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +64,6 @@ public class AddNewOrderActivity extends FragmentActivity {
         adapter1 = new MyListAdapter1();
         list1.setAdapter(adapter1);
 
-
-
         final EditText search = (EditText)findViewById(R.id.etSearch);
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -93,13 +93,24 @@ public class AddNewOrderActivity extends FragmentActivity {
                 }
                 adapter.notifyDataSetChanged();
                 list.setAdapter(adapter);
+            }
+        });
 
-
+        Button AcceptOrder = (Button)findViewById(R.id.bAcceptOrder);
+        AcceptOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(order.isEmpty()){
+                }
+                else{
+                    for(int i = 0; i<order.size(); i++){
+                        MenuItems temp = order.get(i);
+                    }
+                }
             }
         });
 
     }
-
 
     private class MyListAdapter extends ArrayAdapter<MenuItems>{
 
@@ -136,7 +147,6 @@ public class AddNewOrderActivity extends FragmentActivity {
                 }
             });
             return itemView;
-
         }
     }
     private class MyListAdapter1 extends ArrayAdapter<MenuItems>{
@@ -154,9 +164,49 @@ public class AddNewOrderActivity extends FragmentActivity {
             TextView code = (TextView)itemView.findViewById(R.id.tvMealCode1);
             TextView name = (TextView)itemView.findViewById(R.id.tvMealName1);
             TextView description = (TextView)itemView.findViewById(R.id.tvMealDes1);
+
             code.setText("0"+(position+1));
             name.setText(tempItem.getItemName());
             description.setText(tempItem.getItemDescription());
+
+            Button remove = (Button)itemView.findViewById(R.id.bRemove);
+            remove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menu.add(order.get(position));
+                    menuTemp.add(order.get(position));
+                    order.remove(position);
+                    adapter.notifyDataSetChanged();
+                    adapter1.notifyDataSetChanged();
+                }
+            });
+
+            final EditText itemQty = (EditText)itemView.findViewById(R.id.etItemQty);
+
+            Button bPlus =(Button)itemView.findViewById(R.id.bPlus);
+            Button bMinus = (Button)itemView.findViewById(R.id.bMinus);
+
+            bPlus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(Integer.parseInt(itemQty.getText().toString())<10){
+                        itemQty.setText("" + (Integer.parseInt(itemQty.getText().toString()) + 1));
+                        int tempInt = order.get(position).getItemQty();
+                        order.get(position).setItemQty(tempInt + 1);
+                    }
+                }
+            });
+
+            bMinus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(Integer.parseInt(itemQty.getText().toString())>1){
+                        itemQty.setText(""+(Integer.parseInt(itemQty.getText().toString())-1));
+                        int tempInt = order.get(position).getItemQty();
+                        order.get(position).setItemQty(tempInt-1);
+                    }
+                }
+            });
 
             return itemView;
 

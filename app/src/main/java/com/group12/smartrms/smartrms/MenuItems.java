@@ -11,6 +11,7 @@ public class MenuItems implements Serializable{
     public String itemType;
     public String itemDescription;
     public String itemPrice;
+    public int itemQty = 1;
 
     public MenuItems(String itemCode,String itemName, String itemType, String itemDescription,String itemPrice){
         this.itemCode=itemCode;
@@ -19,6 +20,9 @@ public class MenuItems implements Serializable{
         this.itemDescription=itemDescription;
         this.itemPrice=itemPrice;
 
+    }
+    public int getItemQty(){
+        return itemQty;
     }
     public String getItemCode() {
         return itemCode;
@@ -58,5 +62,8 @@ public class MenuItems implements Serializable{
 
     public void setItemPrice(String itemPrice) {
         this.itemPrice = itemPrice;
+    }
+    public void setItemQty(int itemQty){
+        this.itemQty=itemQty;
     }
 }
