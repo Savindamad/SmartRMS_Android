@@ -15,27 +15,28 @@ public class TableTypeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_type);
 
+        //get userId and name from previous Activity
         Intent prIntent = getIntent();
         userID = prIntent.getStringExtra("userID");
         menu = (ArrayList<MenuItems>)prIntent.getSerializableExtra("menu");
 
     }
+    //start TableType1Activity
     public void TableType1(View view){
-        System.out.println("pass table1 method");
         Intent intent1 = new Intent(TableTypeActivity.this,TableType1Activity.class);
         intent1.putExtra("userID", userID);
         intent1.putExtra("menu", menu);
         startActivity(intent1);
     }
+    //start TableType2Activity
     public void TableType2(View view){
-        System.out.println("pass table2 method");
         Intent intent2 = new Intent(TableTypeActivity.this,TableType2Activity.class);
         intent2.putExtra("userID", userID);
         intent2.putExtra("menu",menu);
         startActivity(intent2);
     }
+    //start TableType3Activity
     public void TableType3(View view){
-        System.out.println("pass table3 method");
         Intent intent3 = new Intent(TableTypeActivity.this,TableType3Activity.class);
         intent3.putExtra("userID", userID);
         intent3.putExtra("menu",menu);

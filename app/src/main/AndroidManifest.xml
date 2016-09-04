@@ -33,9 +33,10 @@
 
         <activity android:name=".UserAreaActivity" />
         <activity android:name=".AddNewOrderActivity" />
-        <activity android:name=".ViewAndEditOrderActivity"></activity>
-        <activity android:name=".AddNewOrderTab1Activity"></activity>
-        <activity android:name=".AddNewOrderTab2Activity"></activity>
+        <activity android:name=".ViewAndEditOrderActivity" />
+        <activity android:name=".AddNewOrderTab1Activity" />
+        <activity android:name=".AddNewOrderTab2Activity" />
+        <activity android:name=".ViewMenuActivity"></activity>
     </application>
 
 </manifest>

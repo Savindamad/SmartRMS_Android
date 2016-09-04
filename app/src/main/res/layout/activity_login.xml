@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.group12.smartrms.smartrms.LoginActivity">
+    tools:context="com.group12.smartrms.smartrms.LoginActivity"
+    android:background="#434343">
 
     <EditText
         android:layout_width="320dp"
@@ -39,9 +40,22 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="260dp"
-        android:background="#0112ff"
+        android:background="#007aff"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:onClick="login"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Smart RMS"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:textColor="#0089ff"
+        android:textSize="60dp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

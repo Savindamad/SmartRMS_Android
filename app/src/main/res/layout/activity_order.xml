@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.group12.smartrms.smartrms.OrderActivity">
+    tools:context="com.group12.smartrms.smartrms.OrderActivity"
+    android:background="#9e9e9e">
 
     <Button
         android:layout_width="320dp"
@@ -19,21 +20,34 @@
         android:layout_marginTop="130dp"
         android:textColor="@android:color/white"
         android:onClick="NewOrder"
-        android:textSize="18sp"
-        android:background="#928e8e" />
+        android:textSize="20dp"
+        android:background="#3f61f5" />
 
     <Button
         android:layout_width="320dp"
         android:layout_height="50dp"
-        android:text="View and edit order"
+        android:text="View and cancel order"
         android:id="@+id/bViewOrder"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="190dp"
         android:textColor="@android:color/white"
-        android:onClick="ViewAndEditOrder"
-        android:textSize="18sp"
-        android:background="#928e8e" />
+        android:onClick="ViewAndCancelOrder"
+        android:textSize="20dp"
+        android:background="#3f61f5" />
+
+    <Button
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:text="View menu"
+        android:id="@+id/bViewMenu"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="250dp"
+        android:textColor="@android:color/white"
+        android:onClick="ViewMenu"
+        android:textSize="20dp"
+        android:background="#3f61f5" />
 
     <Button
         android:layout_width="320dp"
@@ -42,11 +56,23 @@
         android:id="@+id/bNotifyCleaner"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="310dp"
         android:textColor="@android:color/white"
         android:onClick="NotifyCleaner"
-        android:textSize="18sp"
-        android:background="#928e8e" />
+        android:textSize="20dp"
+        android:background="#3f61f5" />
+    <Button
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:text="Finish order"
+        android:id="@+id/bOrderFinished"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="370dp"
+        android:textColor="@android:color/white"
+        android:onClick="OrderFinished"
+        android:textSize="20dp"
+        android:background="#3f61f5" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,6 +81,8 @@
         android:text="Table num"
         android:id="@+id/tvTableNum"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textSize="30dp"
+        android:textColor="#fefefe" />
 
 </RelativeLayout>

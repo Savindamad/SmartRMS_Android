@@ -26,25 +26,34 @@ import java.util.Map;
 
 public class TableType1Activity extends AppCompatActivity {
     String userID = "";
+    String tempTableNum = "";
+
     ArrayList<MenuItems> menu = new ArrayList<MenuItems>();
     RequestQueue requestQueue;
+    RequestQueue requestQueue1;
 
     StringRequest request;
+    StringRequest request1;
 
     private static final String URL = "http://smartrmswebb.azurewebsites.net/checkTable.php";
+    private static final String URL1 = "http://smartrmswebb.azurewebsites.net/updateTable.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_type1);
 
+        //get userId and menu from previous Activity
         Intent prIntent = getIntent();
         userID = prIntent.getStringExtra("userID");
         menu = (ArrayList<MenuItems>)prIntent.getSerializableExtra("menu");
+
         requestQueue = Volley.newRequestQueue(this);
+        requestQueue1 = Volley.newRequestQueue(this);
+
     }
 
-
+    //click table
     public void SelectTable1(View view) {
         AccessTable("1");
     }
@@ -72,17 +81,31 @@ public class TableType1Activity extends AppCompatActivity {
 
     public void AccessTable(final String tableNum){
 
+        tempTableNum = tableNum;
         request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
+                    //json response
                     if (!(jsonObject.names().get(0).equals("error"))) {
                         String temp = jsonObject.getString("waiter_id");
+                        System.out.println(temp);
+                        //waiter can access table
                         if(userID.equals(temp) || temp.equals("0")){
-                            LoadActivity(tableNum);
+                            //update table_type table
+                            if(temp.equals("0")){
+                                System.out.println("update table");
+                                updateTable(tableNum);
+                            }
+                            //start OrderActivity
+                            else{
+                                LoadActivity(tableNum);
+                            }
+
                         }
+                        //waiter cannot access table
                         else{
                             AlertDialog.Builder builder1 = new AlertDialog.Builder(TableType1Activity.this);
                             builder1.setTitle("Can not access");
@@ -101,6 +124,7 @@ public class TableType1Activity extends AppCompatActivity {
                             alert11.show();
                         }
                     }
+                    // database error --> table_type table
                     else {
                         AlertDialog.Builder builder1 = new AlertDialog.Builder(TableType1Activity.this);
                         builder1.setTitle("Error");
@@ -118,7 +142,9 @@ public class TableType1Activity extends AppCompatActivity {
                         AlertDialog alert11 = builder1.create();
                         alert11.show();
                     }
-                } catch (JSONException e) {
+                }
+                //Network error
+                catch (JSONException e) {
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(TableType1Activity.this);
                     builder1.setTitle("Error");
                     builder1.setMessage("Network error..");
@@ -139,11 +165,10 @@ public class TableType1Activity extends AppCompatActivity {
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }) {
+            public void onErrorResponse(VolleyError error) {}})
+        {
             @Override
+            //map table_number
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> hashMap = new HashMap<String, String>();
                 hashMap.put("tableNum", tableNum);
@@ -152,11 +177,57 @@ public class TableType1Activity extends AppCompatActivity {
         };
         requestQueue.add(request);
     }
+
+    //update table_type table in database
+    public void updateTable(final String tableNum){
+
+        request1 = new StringRequest(Request.Method.POST, URL1, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    System.out.println(jsonObject.names().get(0));
+
+                    //update successful
+                    if(jsonObject.names().get(0).equals("success")){
+                        LoadActivity(tempTableNum);
+                    }
+
+                    //update not successful
+                    else{
+                        //todo cannot find table
+                        //db error
+                    }
+                }
+                //Network error
+                catch (JSONException e) {
+                    e.printStackTrace();
+                    System.out.println("error "+e);
+                    //todo network error
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {System.out.println("volley error "+error);}})
+        {
+            //map userId and tableNum
+            protected Map<String,String> getParams() throws AuthFailureError{
+                HashMap<String, String> hashMap = new HashMap<String, String>();
+                hashMap.put("userId", userID);
+                hashMap.put("tableNum",tableNum);
+                return hashMap;
+            }
+        };
+        System.out.println("table num "+tableNum+" user id "+userID);
+        requestQueue1.add(request1);
+    }
+
+    //start OrderActivity
     public void LoadActivity(String tableNum){
         Intent intent1 = new Intent(TableType1Activity.this,OrderActivity.class);
         intent1.putExtra("userID",userID);
         intent1.putExtra("tableNum", tableNum);
-        intent1.putExtra("menu",menu);
+        intent1.putExtra("menu", menu);
         startActivity(intent1);
     }
 }

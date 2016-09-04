@@ -47,22 +47,27 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //find edit texts and button
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         final EditText etPassword = (EditText) findViewById(R.id.etPassword);
         final Button bLogin = (Button) findViewById(R.id.bLogin);
 
         requestQueue = Volley.newRequestQueue(this);
 
+        //login button set onclick listener
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //login request
                 request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
+                            //login success
                             if (!(jsonObject.names().get(0).equals("fail"))) {
+                                //add username and name
                                 String userID = jsonObject.getString("user_id");
                                 String name = jsonObject.getString("f_name") +" "+ jsonObject.getString("l_name");
                                 Intent intent = new Intent(LoginActivity.this, UserAreaActivity.class);
@@ -71,8 +76,10 @@ public class LoginActivity extends AppCompatActivity {
                                 etUsername.setText("");
                                 etPassword.setText("");
 
-                                startActivity(intent);
-                            } else {
+                                startActivity(intent); //start user area activity
+                            }
+                            //login fail
+                            else {
                                 AlertDialog.Builder builder1 = new AlertDialog.Builder(LoginActivity.this);
                                 builder1.setTitle("Login fail");
                                 builder1.setMessage("Incorrect username or password..");
@@ -92,7 +99,9 @@ public class LoginActivity extends AppCompatActivity {
                                 alert11.show();
 
                             }
-                        } catch (JSONException e) {
+                        }
+                        //Network error
+                        catch (JSONException e) {
                             AlertDialog.Builder builder1 = new AlertDialog.Builder(LoginActivity.this);
                             builder1.setTitle("Login fail");
                             builder1.setMessage("Network error..");
@@ -120,6 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }) {
                     @Override
+                    //map user name and password
                     protected Map<String, String> getParams() throws AuthFailureError {
                         HashMap<String, String> hashMap = new HashMap<String, String>();
                         hashMap.put("username", etUsername.getText().toString()); //todo encript username and password

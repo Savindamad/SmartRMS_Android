@@ -36,21 +36,24 @@ public class UserAreaActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_area);
 
+        //get userId and name from previous Activity
         Intent intentpr = getIntent();
         userID = intentpr.getStringExtra("userID");
         name = intentpr.getStringExtra("Name");
 
-
-        final Button bTableTypes = (Button)findViewById(R.id.bTableTypes);
+        //set text--> waiter name
         final TextView etName = (TextView)findViewById(R.id.lName);
         etName.setText(name);
 
     }
+
+    //get menu from database
     void getMenu(){
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, new Response.Listener<JSONObject>() {
             @Override
+            //response --> json array
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray menuItems = response.getJSONArray("menu_items");
@@ -59,11 +62,13 @@ public class UserAreaActivity extends Activity {
                     for (int i = 0; i < size; i++) {
 
                         JSONObject menuItem = menuItems.getJSONObject(i);
-                        String itemCode = menuItem.getString("menu_item_code");
-                        String itemName = menuItem.getString("name");
-                        String itemType = menuItem.getString("type");
+                        String itemCode = menuItem.getString("item_id");
+                        String itemName = menuItem.getString("item_name");
+                        String itemType = menuItem.getString("item_type");
                         String itemDescription = menuItem.getString("description");
                         String itemPrice = menuItem.getString("price");
+
+                        // add to menu array list
                         menu.add(new MenuItems(itemCode,itemName,itemType,itemDescription,itemPrice));
 
                     }
@@ -83,17 +88,20 @@ public class UserAreaActivity extends Activity {
         });
         requestQueue.add(jsonObjectRequest);
     }
+    //logout button
     public void Logout(View view) {
         Intent intent = new Intent(UserAreaActivity.this,LoginActivity.class);
-        startActivity(intent);
+        startActivity(intent); //start LoginActivity
     }
+
+    //pass userId and menu array
     void loadPage(){
         Intent intent = new Intent(UserAreaActivity.this,TableTypeActivity.class);
         intent.putExtra("userID", userID);
         intent.putExtra("menu", menu);
         startActivity(intent);
     }
-
+    //Start TableTypesActivity
     public void tableTypes(View view) {
         getMenu();
     }

@@ -14,14 +14,14 @@
         android:layout_marginLeft="40dp" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add"
+        android:layout_width="65dp"
+        android:layout_height="27dp"
         android:id="@+id/bAdd"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp" />
+        android:layout_marginRight="10dp"
+        android:background="@drawable/add_button" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -1,6 +1,7 @@
 package com.group12.smartrms.smartrms;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -50,6 +50,12 @@ public class AddNewOrderActivity extends FragmentActivity {
         tab2.setContent(R.id.accept);
         tab.addTab(tab2);
 
+        for(int i=0;i<tab.getTabWidget().getChildCount();i++)
+        {
+            TextView tv = (TextView) tab.getTabWidget().getChildAt(i).findViewById(android.R.id.title); //Unselected Tabs
+            tv.setTextColor(Color.parseColor("#ffffff"));
+        }
+
         Intent prIntent = getIntent();
         userID = prIntent.getStringExtra("userID");
         tableNum = prIntent.getStringExtra("tableNum");
@@ -64,7 +70,7 @@ public class AddNewOrderActivity extends FragmentActivity {
         adapter1 = new MyListAdapter1();
         list1.setAdapter(adapter1);
 
-        final EditText search = (EditText)findViewById(R.id.etSearch);
+        final EditText search = (EditText)findViewById(R.id.etSearch1);
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -101,11 +107,11 @@ public class AddNewOrderActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 if(order.isEmpty()){
+                    //todo
                 }
                 else{
-                    for(int i = 0; i<order.size(); i++){
-                        MenuItems temp = order.get(i);
-                    }
+                    AddNewOrder();
+                    AddOrderItems();
                 }
             }
         });
@@ -126,11 +132,11 @@ public class AddNewOrderActivity extends FragmentActivity {
             MenuItems tempItem = menuTemp.get(position);
             TextView code = (TextView)itemView.findViewById(R.id.tvMealCode);
             TextView name = (TextView)itemView.findViewById(R.id.tvMealName1);
-            TextView description = (TextView)itemView.findViewById(R.id.tvMealDes);
+            TextView type = (TextView)itemView.findViewById(R.id.tvMealDes);
             Button Add = (Button)itemView.findViewById(R.id.bAdd);
-            code.setText("00"+(position+1));
+            code.setText(""+(position+1));
             name.setText(tempItem.getItemName());
-            description.setText(tempItem.getItemDescription());
+            type.setText(tempItem.getItemType());
             Add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -163,11 +169,11 @@ public class AddNewOrderActivity extends FragmentActivity {
             MenuItems tempItem = order.get(position);
             TextView code = (TextView)itemView.findViewById(R.id.tvMealCode1);
             TextView name = (TextView)itemView.findViewById(R.id.tvMealName1);
-            TextView description = (TextView)itemView.findViewById(R.id.tvMealDes1);
+            TextView type = (TextView)itemView.findViewById(R.id.tvMealDes1);
 
             code.setText("0"+(position+1));
             name.setText(tempItem.getItemName());
-            description.setText(tempItem.getItemDescription());
+            type.setText(tempItem.getItemType());
 
             Button remove = (Button)itemView.findViewById(R.id.bRemove);
             remove.setOnClickListener(new View.OnClickListener() {
@@ -211,5 +217,11 @@ public class AddNewOrderActivity extends FragmentActivity {
             return itemView;
 
         }
+    }
+    public void AddNewOrder(){
+
+    }
+    public void AddOrderItems(){
+
     }
 }
