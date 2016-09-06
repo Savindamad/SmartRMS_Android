@@ -70,13 +70,21 @@ public class LoginActivity extends AppCompatActivity {
                                 //add username and name
                                 String userID = jsonObject.getString("user_id");
                                 String name = jsonObject.getString("f_name") +" "+ jsonObject.getString("l_name");
-                                Intent intent = new Intent(LoginActivity.this, UserAreaActivity.class);
-                                intent.putExtra("userID", userID);
-                                intent.putExtra("Name", name);
-                                etUsername.setText("");
-                                etPassword.setText("");
+                                String type = jsonObject.getString("user_type");
+                                if(type.equals("WAITER")){
+                                    Intent intent = new Intent(LoginActivity.this, UserAreaActivity.class);
+                                    intent.putExtra("userID", userID);
+                                    intent.putExtra("Name", name);
+                                    etUsername.setText("");
+                                    etPassword.setText("");
 
-                                startActivity(intent); //start user area activity
+                                    startActivity(intent); //start user area activity
+                                }
+                                else{
+                                    //todo
+                                    //invalid user
+                                }
+
                             }
                             //login fail
                             else {
