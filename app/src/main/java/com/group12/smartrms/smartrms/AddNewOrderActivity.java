@@ -21,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,7 +46,7 @@ public class AddNewOrderActivity extends FragmentActivity {
     StringRequest request;
     private RequestQueue requestQueue;
 
-    String URL = "http://smartrmswebb.azurewebsites.net/";
+    String URL = "http://smartrmswebb.azurewebsites.net/addNewOrder.php";
 
 
     @Override
@@ -53,6 +54,8 @@ public class AddNewOrderActivity extends FragmentActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_order);
+
+        requestQueue = Volley.newRequestQueue(this);
 
         TabHost tab = (TabHost)findViewById(R.id.tabHost);
         tab.setup();
@@ -127,8 +130,8 @@ public class AddNewOrderActivity extends FragmentActivity {
                     //todo
                 }
                 else{
+                    System.out.println("order is not empty");
                     AddNewOrder();
-                    AddOrderItems();
                 }
             }
         });
@@ -244,6 +247,9 @@ public class AddNewOrderActivity extends FragmentActivity {
                     if(jsonObject.names().get(0).equals("result")){
                         System.out.println("success");
                         //String orderNo = jsonObject.getString("");
+                    }
+                    else{
+                        System.out.println("not success");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
