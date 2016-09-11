@@ -20,9 +20,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,14 +42,18 @@ public class AddNewOrderActivity extends FragmentActivity {
     private ArrayList<MenuItems> menu = new ArrayList<MenuItems>();
     private List<MenuItems> menuTemp = new ArrayList<MenuItems>();
     private ArrayList<MenuItems> order =new ArrayList<MenuItems>();
+    private ArrayList<Order> AllOders = new ArrayList<Order>();
 
     ArrayAdapter<MenuItems> adapter;
     ArrayAdapter<MenuItems> adapter1;
 
     StringRequest request;
+    StringRequest request1;
     private RequestQueue requestQueue;
+    private RequestQueue requestQueue1;
 
     String URL = "http://smartrmswebb.azurewebsites.net/addNewOrder.php";
+    String URL1 = "http://smartrmswebb.azurewebsites.net/addNewOrderItem.php";
 
 
     @Override
@@ -56,6 +63,7 @@ public class AddNewOrderActivity extends FragmentActivity {
         setContentView(R.layout.activity_add_new_order);
 
         requestQueue = Volley.newRequestQueue(this);
+        requestQueue1 = Volley.newRequestQueue(this);
 
         TabHost tab = (TabHost)findViewById(R.id.tabHost);
         tab.setup();
@@ -244,9 +252,10 @@ public class AddNewOrderActivity extends FragmentActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    if(jsonObject.names().get(0).equals("result")){
+                    if(!(jsonObject.names().get(0).equals("error"))){
                         System.out.println("success");
-                        //String orderNo = jsonObject.getString("");
+                        String orderNo = jsonObject.getString("order_no");
+                        AddOrderItems(orderNo);
                     }
                     else{
                         System.out.println("not success");
@@ -272,7 +281,80 @@ public class AddNewOrderActivity extends FragmentActivity {
         };
         requestQueue.add(request);
     }
-    public void AddOrderItems(){
+    public void AddOrderItems(String order_no) throws JSONException {
 
+        JSONArray jsonArray = new JSONArray();
+        for(int i = 0; i<order.size(); i++){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("item_code",order.get(i).getItemCode());
+            jsonObject.put("item_qty",order.get(i).getItemQty());
+            jsonObject.put("order_id",order_no);
+            jsonArray.put(jsonObject);
+        }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("order",jsonArray);
+        jsonObject.put("table_no",tableNum);
+        jsonObject.put("user_id",userID);
+        System.out.println(jsonObject);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL1,jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    System.out.println("pass b");
+                    JSONArray allOrders = response.getJSONArray("orders");
+                    int size = allOrders.length();
+                    for(int n = 0 ; n< AllOders.size(); n++){
+                        AllOders.remove(0);
+                    }
+
+                    for (int i = 0; i < size; i++) {
+                        Order orderObj = new Order();
+                        String OrderId;
+                        JSONArray orders = allOrders.getJSONArray(i);
+                        int size1 = orders.length();
+                        for(int j = 0; j<size1; j++){
+                            JSONObject order = orders.getJSONObject(j);
+                            if(j==0){
+                                OrderId = order.getString("order_no");
+                                orderObj.setOrderId(OrderId);
+                            }
+                            String item_Code = order.getString("item_id");
+                            String item_Qty = order.getString("quantity");
+
+                            OrderItem orderItem = new OrderItem(item_Code,item_Qty);
+                            orderObj.addOrderItem(orderItem);
+                        }
+                        AllOders.add(orderObj);
+                    }
+                    System.out.println("response");
+                    System.out.println("order id "+AllOders.get(0).getOrderId());
+
+                    LoadActivity();
+
+
+
+                } catch (JSONException e) {
+                    System.out.println(e);
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+
+            }
+        });
+        System.out.println("pass a");
+        requestQueue1.add(jsonObjectRequest);
+    }
+    public void LoadActivity(){
+        Intent intent1 = new Intent(AddNewOrderActivity.this,OrderActivity.class);
+        intent1.putExtra("userID",userID);
+        intent1.putExtra("tableNum", tableNum);
+        intent1.putExtra("menu", menu);
+        startActivity(intent1);
     }
 }

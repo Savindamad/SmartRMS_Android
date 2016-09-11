@@ -26,6 +26,7 @@ public class OrderActivity extends AppCompatActivity {
     String userID = "";
     String tableNum = "";
     ArrayList<MenuItems> menu = new ArrayList<>();
+    ArrayList<Order> AllOrders = new ArrayList<>();
 
     RequestQueue requestQueue1;
     StringRequest request1;
