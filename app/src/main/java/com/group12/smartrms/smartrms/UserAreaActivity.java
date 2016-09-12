@@ -27,7 +27,6 @@ public class UserAreaActivity extends Activity {
     private String name;
     ArrayList<MenuItems> menu = new ArrayList<>();
 
-    StringRequest request;
     private RequestQueue requestQueue;
     private static final String URL = "http://smartrmswebb.azurewebsites.net/getMenu.php";
 

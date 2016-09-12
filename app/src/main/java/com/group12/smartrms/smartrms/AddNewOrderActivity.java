@@ -304,6 +304,7 @@ public class AddNewOrderActivity extends FragmentActivity {
                     System.out.println("pass b");
                     JSONArray allOrders = response.getJSONArray("orders");
                     int size = allOrders.length();
+                    System.out.println("size "+size);
                     for(int n = 0 ; n< AllOders.size(); n++){
                         AllOders.remove(0);
                     }
@@ -313,6 +314,7 @@ public class AddNewOrderActivity extends FragmentActivity {
                         String OrderId;
                         JSONArray orders = allOrders.getJSONArray(i);
                         int size1 = orders.length();
+                        System.out.println("size "+size1);
                         for(int j = 0; j<size1; j++){
                             JSONObject order = orders.getJSONObject(j);
                             if(j==0){
@@ -328,7 +330,6 @@ public class AddNewOrderActivity extends FragmentActivity {
                         AllOders.add(orderObj);
                     }
                     System.out.println("response");
-                    System.out.println("order id "+AllOders.get(0).getOrderId());
 
                     LoadActivity();
 
@@ -347,7 +348,6 @@ public class AddNewOrderActivity extends FragmentActivity {
 
             }
         });
-        System.out.println("pass a");
         requestQueue1.add(jsonObjectRequest);
     }
     public void LoadActivity(){

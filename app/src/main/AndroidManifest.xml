@@ -36,7 +36,8 @@
         <activity android:name=".ViewAndEditOrderActivity" />
         <activity android:name=".AddNewOrderTab1Activity" />
         <activity android:name=".AddNewOrderTab2Activity" />
-        <activity android:name=".ViewMenuActivity"></activity>
+        <activity android:name=".ViewMenuActivity" />
+        <activity android:name=".ViewOrderItemsActivity"></activity>
     </application>
 
 </manifest>

@@ -38,6 +38,8 @@ public class OrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
+        System.out.println("start order activity");
+
         final TextView tabNum = (TextView)findViewById(R.id.tvTableNum);
 
         //get userId, tableNum, menu arrayList from previous Activity
@@ -45,7 +47,10 @@ public class OrderActivity extends AppCompatActivity {
         userID = prIntent.getStringExtra("userID");
         tableNum = prIntent.getStringExtra("tableNum");
         menu = (ArrayList<MenuItems>)prIntent.getSerializableExtra("menu");
-
+        AllOrders = (ArrayList<Order>)prIntent.getSerializableExtra("AllOrders");
+        System.out.println("a1");
+        System.out.println("size "+AllOrders.size());
+        System.out.println("a2");
         //set TableNum label
         tabNum.setText("Table "+tableNum);
 
@@ -67,6 +72,7 @@ public class OrderActivity extends AppCompatActivity {
         Intent intent1 = new Intent(OrderActivity.this,ViewAndEditOrderActivity.class);
         intent1.putExtra("userID",userID);
         intent1.putExtra("menu", menu);
+        intent1.putExtra("AllOrders",AllOrders);
         startActivity(intent1);
     }
 

@@ -14,9 +14,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,14 +31,17 @@ public class TableType1Activity extends AppCompatActivity {
     String tempTableNum = "";
 
     ArrayList<MenuItems> menu = new ArrayList<MenuItems>();
+    ArrayList<Order> AllOrders = new ArrayList<Order>();
     RequestQueue requestQueue;
     RequestQueue requestQueue1;
+    RequestQueue requestQueue2;
 
     StringRequest request;
     StringRequest request1;
 
     private static final String URL = "http://smartrmswebb.azurewebsites.net/checkTable.php";
     private static final String URL1 = "http://smartrmswebb.azurewebsites.net/updateTable.php";
+    private static final String URL2 = "http://smartrmswebb.azurewebsites.net/getAllOrders.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,7 @@ public class TableType1Activity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
         requestQueue1 = Volley.newRequestQueue(this);
+        requestQueue2 =Volley.newRequestQueue(this);
 
     }
 
@@ -91,17 +97,15 @@ public class TableType1Activity extends AppCompatActivity {
                     //json response
                     if (!(jsonObject.names().get(0).equals("error"))) {
                         String temp = jsonObject.getString("waiter_id");
-                        System.out.println(temp);
                         //waiter can access table
                         if(userID.equals(temp) || temp.equals("0")){
                             //update table_type table
                             if(temp.equals("0")){
-                                System.out.println("update table");
                                 updateTable(tableNum);
                             }
                             //start OrderActivity
                             else{
-                                LoadActivity(tableNum);
+                                GetAllOrders(tableNum);
                             }
 
                         }
@@ -190,7 +194,7 @@ public class TableType1Activity extends AppCompatActivity {
 
                     //update successful
                     if(jsonObject.names().get(0).equals("success")){
-                        LoadActivity(tempTableNum);
+                        GetAllOrders(tempTableNum);
                     }
 
                     //update not successful
@@ -218,16 +222,76 @@ public class TableType1Activity extends AppCompatActivity {
                 return hashMap;
             }
         };
-        System.out.println("table num "+tableNum+" user id "+userID);
         requestQueue1.add(request1);
     }
 
     //start OrderActivity
+
+    public void GetAllOrders(final String tempTableNum){
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("table_no", tempTableNum);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL2,jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            //response --> json array
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray allOrders = response.getJSONArray("orders");
+                    int size = allOrders.length();
+                    if(!(allOrders.get(0).equals("none"))) {
+                        for (int i = 0; i < size; i++) {
+
+                            Order orderObj = new Order();
+                            String OrderId;
+                            String OrderStatus;
+
+                            JSONArray orders = allOrders.getJSONArray(i);
+
+                            int size1 = orders.length();
+                            for (int j = 0; j < size1; j++) {
+                                JSONObject order = orders.getJSONObject(j);
+                                if (j == 0) {
+                                    OrderId = order.getString("order_no");
+                                    //OrderStatus = order.getString("status");
+
+                                    orderObj.setOrderId(OrderId);
+
+                                }
+                                String item_Code = order.getString("item_id");
+                                String item_Qty = order.getString("quantity");
+
+                                OrderItem orderItem = new OrderItem(item_Code, item_Qty);
+                                orderObj.addOrderItem(orderItem);
+                            }
+                            AllOrders.add(orderObj);
+                        }
+                    }
+                    System.out.println("no 14 size" + AllOrders.size());
+                    LoadActivity(tempTableNum);
+                }
+                catch (JSONException e) {
+                        e.printStackTrace();
+                }
+            }
+            }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+
+
+        requestQueue.add(jsonObjectRequest);
+    }
     public void LoadActivity(String tableNum){
         Intent intent1 = new Intent(TableType1Activity.this,OrderActivity.class);
         intent1.putExtra("userID",userID);
         intent1.putExtra("tableNum", tableNum);
         intent1.putExtra("menu", menu);
+        intent1.putExtra("AllOrders", AllOrders);
         startActivity(intent1);
+        System.out.println("no 19");
     }
 }
