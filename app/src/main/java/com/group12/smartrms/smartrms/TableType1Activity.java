@@ -101,10 +101,12 @@ public class TableType1Activity extends AppCompatActivity {
                         if(userID.equals(temp) || temp.equals("0")){
                             //update table_type table
                             if(temp.equals("0")){
+                                System.out.println("update Table");
                                 updateTable(tableNum);
                             }
                             //start OrderActivity
                             else{
+                                System.out.println("not update Table");
                                 GetAllOrders(tableNum);
                             }
 
@@ -240,8 +242,15 @@ public class TableType1Activity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray allOrders = response.getJSONArray("orders");
+                    System.out.println(allOrders);
                     int size = allOrders.length();
-                    if(!(allOrders.get(0).equals("none"))) {
+
+                    JSONArray orderTemp = allOrders.getJSONArray(0);
+                    System.out.println(orderTemp);
+                    JSONObject orderTempObj = orderTemp.getJSONObject(0);
+                    System.out.println(orderTempObj);
+
+                    if(!(orderTempObj.getString("order_no").equals("None"))) {
                         for (int i = 0; i < size; i++) {
 
                             Order orderObj = new Order();
@@ -262,6 +271,7 @@ public class TableType1Activity extends AppCompatActivity {
                                 }
                                 String item_Code = order.getString("item_id");
                                 String item_Qty = order.getString("quantity");
+                                System.out.println("pass h");
 
                                 OrderItem orderItem = new OrderItem(item_Code, item_Qty);
                                 orderObj.addOrderItem(orderItem);
@@ -273,12 +283,14 @@ public class TableType1Activity extends AppCompatActivity {
                     LoadActivity(tempTableNum);
                 }
                 catch (JSONException e) {
-                        e.printStackTrace();
+                    System.out.println("error "+e);
+                    e.printStackTrace();
                 }
             }
             }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                System.out.println("error "+error);
             }
         });
 

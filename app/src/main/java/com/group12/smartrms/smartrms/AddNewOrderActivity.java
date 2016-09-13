@@ -253,7 +253,6 @@ public class AddNewOrderActivity extends FragmentActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if(!(jsonObject.names().get(0).equals("error"))){
-                        System.out.println("success");
                         String orderNo = jsonObject.getString("order_no");
                         AddOrderItems(orderNo);
                     }
@@ -294,8 +293,7 @@ public class AddNewOrderActivity extends FragmentActivity {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("order",jsonArray);
         jsonObject.put("table_no",tableNum);
-        jsonObject.put("user_id",userID);
-        System.out.println(jsonObject);
+        jsonObject.put("user_id", userID);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL1,jsonObject, new Response.Listener<JSONObject>() {
             @Override
@@ -303,8 +301,10 @@ public class AddNewOrderActivity extends FragmentActivity {
                 try {
                     System.out.println("pass b");
                     JSONArray allOrders = response.getJSONArray("orders");
+                    System.out.println(allOrders);
                     int size = allOrders.length();
                     System.out.println("size "+size);
+
                     for(int n = 0 ; n< AllOders.size(); n++){
                         AllOders.remove(0);
                     }
@@ -355,6 +355,7 @@ public class AddNewOrderActivity extends FragmentActivity {
         intent1.putExtra("userID",userID);
         intent1.putExtra("tableNum", tableNum);
         intent1.putExtra("menu", menu);
+        intent1.putExtra("AllOrders", AllOders);
         startActivity(intent1);
     }
 }

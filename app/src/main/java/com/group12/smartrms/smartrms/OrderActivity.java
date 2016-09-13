@@ -124,7 +124,6 @@ public class OrderActivity extends AppCompatActivity {
                 return hashMap;
             }
         };
-        System.out.println("table num "+tableNum+" user id "+userID);
         requestQueue1.add(request1);
     }
 
