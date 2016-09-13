@@ -48,7 +48,7 @@ public class AddNewOrderActivity extends FragmentActivity {
     ArrayAdapter<MenuItems> adapter1;
 
     StringRequest request;
-    StringRequest request1;
+
     private RequestQueue requestQueue;
     private RequestQueue requestQueue1;
 

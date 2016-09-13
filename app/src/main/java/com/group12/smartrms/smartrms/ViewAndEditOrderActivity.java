@@ -29,7 +29,6 @@ public class ViewAndEditOrderActivity extends Activity {
         userID = prIntent.getStringExtra("userID");
         menu = (ArrayList<MenuItems>)prIntent.getSerializableExtra("menu");
         AllOrders = (ArrayList<Order>)prIntent.getSerializableExtra("AllOrders");
-        System.out.println(AllOrders.size());
 
         final ListView list = (ListView)findViewById(R.id.lvOrderName);
         adapter = new MyListAdapter();
@@ -49,7 +48,6 @@ public class ViewAndEditOrderActivity extends Activity {
                 itemView = getLayoutInflater().inflate(R.layout.list_view_layout3,parent,false);
             }
             Order order = AllOrders.get(position);
-            ArrayList<OrderItem> tempOrderItem = order.getOrderItems();
             TextView name = (TextView)itemView.findViewById(R.id.etOrderNo);
             Button bView = (Button)itemView.findViewById(R.id.bView);
             Button bCancel = (Button)itemView.findViewById(R.id.bCancel);
@@ -58,7 +56,10 @@ public class ViewAndEditOrderActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     Intent intentnw = new Intent(ViewAndEditOrderActivity.this,ViewOrderItemsActivity.class);
+                    String order_N = ""+(position+1);
+                    intentnw.putExtra("OrderNum", order_N);
                     intentnw.putExtra("OrderItems",AllOrders.get(position).getOrderItems());
+                    intentnw.putExtra("menu",menu);
                     startActivity(intentnw);
                 }
             });
